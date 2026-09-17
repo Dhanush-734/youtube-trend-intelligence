@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: #0f1420;
+  color: #e8ecf5;
+}
+
+body {
+  /* A very faint vertical lift so the page doesn't read as flat black */
+  background-image: radial-gradient(
+    120% 60% at 50% 0%,
+    rgba(86, 168, 255, 0.07) 0%,
+    rgba(15, 20, 32, 0) 60%
+  );
+  background-attachment: fixed;
+}
+
+/* Numbers in tables and stat cards must not jitter as they update. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Keyboard focus stays visible everywhere. */
+:focus-visible {
+  outline: 2px solid #56a8ff;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0f1420;
+}
+::-webkit-scrollbar-thumb {
+  background: #262f45;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #36415c;
+}

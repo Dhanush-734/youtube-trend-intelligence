@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Project Synopsis - YouTube Trend Intelligence</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm 20mm 20mm 20mm;
+      @bottom-right {
+        content: counter(page);
+      }
+    }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #ffffff;
+      font-size: 11pt;
+      margin: 0;
+      padding: 0;
+    }
+    .header-box {
+      border-bottom: 2.5px solid #0f1420;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .university-title {
+      font-size: 14pt;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #333333;
+      margin-bottom: 4px;
+    }
+    .sub-title {
+      font-size: 11pt;
+      color: #555555;
+      font-style: italic;
+      margin-bottom: 12px;
+    }
+    .project-title {
+      font-size: 18pt;
+      font-weight: 800;
+      color: #0f1420;
+      margin: 8px 0;
+      line-height: 1.25;
+    }
+    .badge {
+      display: inline-block;
+      background: #f0f4f8;
+      border: 1px solid #d0dbe5;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 9pt;
+      font-weight: 600;
+      color: #2b4c6f;
+      margin-top: 4px;
+    }
+    h2 {
+      font-size: 13pt;
+      font-weight: 700;
+      color: #0f1420;
+      border-left: 4px solid #56a8ff;
+      padding-left: 8px;
+      margin-top: 22px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    h3 {
+      font-size: 11pt;
+      font-weight: 600;
+      color: #262f45;
+      margin-top: 14px;
+      margin-bottom: 4px;
+    }
+    p {
+      margin-top: 0;
+      margin-bottom: 10px;
+      text-align: justify;
+    }
+    ul, ol {
+      margin-top: 0;
+      margin-bottom: 10px;
+      padding-left: 24px;
+    }
+    li {
+      margin-bottom: 4px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 16px 0;
+      font-size: 9.5pt;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 7px 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f1f5f9;
+      font-weight: 700;
+      color: #0f1420;
+    }
+    tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+    .formula-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #ff7a45;
+      padding: 10px 14px;
+      margin: 10px 0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 9.5pt;
+      border-radius: 4px;
+    }
+    .highlight {
+      font-weight: 600;
+      color: #0f1420;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 18px;
+      font-size: 9.5pt;
+    }
+    .meta-item strong {
+      color: #0f1420;
+    }
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-box">
+    <div class="university-title">Master of Computer Applications (MCA) — Project Synopsis</div>
+    <div class="sub-title">Academic Year 2025–2026 · Final Year Capstone Project</div>
+    <div class="project-title">YouTube Trend Intelligence: Near-Real-Time Video Analytics &amp; Empirical Growth Intelligence Platform</div>
+    <div class="badge">Full-Stack Analytics · PostgreSQL Window Functions · YouTube Data API v3 · Next.js 14</div>
+  </div>
+
+  <div class="meta-grid">
+    <div class="meta-item"><strong>Project Domain:</strong> Big Data Analytics &amp; Web Intelligence</div>
+    <div class="meta-item"><strong>Architecture:</strong> Append-Only Temporal Storage</div>
+    <div class="meta-item"><strong>Backend &amp; Database:</strong> Next.js App Router, PostgreSQL 18</div>
+    <div class="meta-item"><strong>Frontend Framework:</strong> React 18, Tailwind CSS, Recharts</div>
+  </div>
+
+  <h2>1. Introduction</h2>
+  <p>
+    In digital media consumption, video platforms like YouTube serve billions of daily interactions. However, native platform analytics predominantly report static, cumulative counters (such as total views and likes) without revealing the underlying temporal dynamics of content propagation. Content strategists, market analysts, and academic researchers require granular visibility into <em>how fast</em> content is growing, audience engagement trajectories, and why particular media items ascend the trending chart.
+  </p>
+  <p>
+    <strong>YouTube Trend Intelligence (TrendX)</strong> is an advanced, production-grade video analytics platform designed to continuously monitor, capture, and compute near-real-time performance metrics for trending videos. The platform operates on a strict paradigm of <strong>empirical observation</strong>: it captures unmutated temporal snapshots into PostgreSQL, evaluates historical deltas via SQL window functions (<code>LAG()</code>), and calculates a transparent, multi-factor <strong>Custom Trend Score</strong> without relying on opaque machine-learning speculation.
+  </p>
+
+  <h2>2. Problem Statement</h2>
+  <p>
+    Existing analytics solutions and public video dashboards exhibit three fundamental deficiencies:
+  </p>
+  <ol>
+    <li><strong>Absence of Temporal Granularity:</strong> Standard APIs expose only current absolute numbers. When a video reaches 5,000,000 views, there is no native record indicating whether those views accumulated steadily over 3 weeks or surged in the past 60 minutes.</li>
+    <li><strong>Vulnerability to Viral Outliers:</strong> Simple weighted averages fail because view metrics (hundreds of thousands) and engagement ratios (e.g., 3% to 8%) operate on vastly disparate mathematical scales, causing raw view counts to overpower all other factors.</li>
+    <li><strong>API Quota Depletion Risks:</strong> Careless polling and use of heavy search endpoints (such as <code>search.list</code> at 100 quota units per call) rapidly exhaust Google's 10,000 daily free allowance, causing application failures.</li>
+  </ol>
+
+  <h2>3. Project Objectives</h2>
+  <ul>
+    <li><strong>Automated Periodic Ingestion:</strong> Ingest the top 50 popular video records across multiple countries (India, United States, United Kingdom, Canada, Australia) on a 15-minute interval at a minimal cost of 1 quota unit per country.</li>
+    <li><strong>Immutable Append-Only Snapshot Storage:</strong> Maintain historical auditability in PostgreSQL by appending snapshot rows with compound unique constraints (<code>video_id, region, captured_at</code>) rather than overwriting current records.</li>
+    <li><strong>Temporal Rate Calculation:</strong> Dynamically compute observed views gained, window elapsed time, and <strong>view velocity (views gained per hour)</strong> using the SQL <code>LAG()</code> window function.</li>
+    <li><strong>Transparent Custom Trend Score:</strong> Implement a percentile-normalized multi-factor scoring engine using <code>PERCENT_RANK()</code> across View Velocity (50%), Engagement Rate (20%), Publication Recency (15%), and Absolute Reach (15%).</li>
+    <li><strong>Deterministic Rule-Based Rising Detection:</strong> Identify organic viral breakouts using verified thresholds (&ge;10,000 view floor and &ge;5,000 views/hr velocity), preventing trivial low-view anomalies from distorting the chart.</li>
+    <li><strong>Interactive Visual Intelligence Dashboard:</strong> Provide high-density charts, video dossiers, embedded playback, search/filtering, and CSV export capabilities.</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <h2>4. System Architecture &amp; Data Pipeline</h2>
+  <p>
+    The system follows a decoupling between data ingestion, analytical aggregation, and presentation layers:
+  </p>
+  <div class="formula-box">
+YouTube Data API v3 (videos.list chart=mostPopular — 1 unit)
+                      │
+                      ▼
+     POST /api/collect (Protected by COLLECT_SECRET bearer token)
+                      │
+                      ▼
+     PostgreSQL Relational Storage (Append-Only Snapshot Pattern)
+     ├── channels (creator identity & metadata)
+     ├── categories (regional taxonomy mappings)
+     ├── videos (immutable video metadata: duration, published date)
+     ├── video_snapshots (APPEND-ONLY: view_count, likes, comments, timestamp)
+     └── collection_runs (audit logging: quota units, execution status)
+                      │
+                      ▼
+     SQL Analytics Engine (src/lib/queries.ts)
+     ├── LAG() & DISTINCT ON: Compute view_delta & views_per_hour
+     └── PERCENT_RANK(): Multi-factor percentile normalization
+                      │
+        ┌─────────────┴─────────────┐
+        ▼                           ▼
+Next.js REST API Routes       React Server Components (RSC)
+(/api/trending, /api/rising,   (Zero network hop direct query layer,
+ /api/analytics, /api/video)    interactive Recharts dark theme dashboard)
+  </div>
+
+  <h2>5. Database Schema Design</h2>
+  <p>
+    The PostgreSQL schema enforces strict referential integrity and optimizes temporal queries through targeted composite indexes:
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Table Name</th>
+        <th>Primary Key / Constraint</th>
+        <th>Purpose &amp; Design Decisions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>channels</code></td>
+        <td><code>channel_id</code></td>
+        <td>Stores creator identity, channel name, and avatar URL. Created upon first appearance.</td>
+      </tr>
+      <tr>
+        <td><code>categories</code></td>
+        <td><code>(category_id, region)</code></td>
+        <td>Caches YouTube category taxonomies per country. Prevents repeated quota consumption.</td>
+      </tr>
+      <tr>
+        <td><code>videos</code></td>
+        <td><code>video_id</code></td>
+        <td>Stores static facts (title, duration, publish timestamp). View counts are omitted by design.</td>
+      </tr>
+      <tr>
+        <td><code>video_snapshots</code></td>
+        <td><code>id</code> (BIGSERIAL)<br><code>UNIQUE(video_id, region, captured_at)</code></td>
+        <td><strong>Append-only temporal core.</strong> Every reading records view_count, like_count, comment_count. Prevents duplicate batch insertion.</td>
+      </tr>
+      <tr>
+        <td><code>collection_runs</code></td>
+        <td><code>id</code> (BIGSERIAL)</td>
+        <td>Operational audit log tracking run start/end, videos processed, quota consumed, and status.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>6. Mathematical Formulation &amp; Scoring Engine</h2>
+
+  <h3>A. Observed Velocity &amp; Growth Derivation</h3>
+  <p>
+    Using PostgreSQL window functions, each video's latest snapshot ($S_t$) is compared against its immediate predecessor ($S_{t-1}$):
+  </p>
+  <div class="formula-box">
+View Delta (&Delta;V) = GREATEST(V_latest - V_previous, 0)
+Elapsed Hours (&Delta;t) = (captured_at_latest - captured_at_previous) in seconds / 3600.0
+Velocity (VPH) = &Delta;V / &Delta;t  (Views gained per hour)
+Growth Percentage = ((V_latest - V_previous) / V_previous) &times; 100
+Engagement Rate = ((Likes + Comments) / Views) &times; 100
+  </div>
+
+  <h3>B. Custom Trend Score Formulation</h3>
+  <p>
+    To eliminate scale distortion, each metric is converted into a percentile rank ($r \in [0.0, 1.0]$) across all currently charted items:
+  </p>
+  <div class="formula-box">
+Trend Score = ROUND [ ( 0.50 &times; r_velocity
+                      + 0.20 &times; r_engagement
+                      + 0.15 &times; r_recency
+                      + 0.15 &times; r_popularity ) &times; 100 ]
+  </div>
+  <ul>
+    <li><span class="highlight">View Velocity (50%):</span> Dominant indicator reflecting immediate viral acceleration.</li>
+    <li><span class="highlight">Engagement Rate (20%):</span> Ratio of active participatory feedback (likes + comments) to passive impressions.</li>
+    <li><span class="highlight">Publication Recency (15%):</span> Hours elapsed since upload (inverted so newer videos receive higher rank).</li>
+    <li><span class="highlight">Popularity Reach (15%):</span> Absolute cumulative viewership establishing baseline reach.</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <h2>7. Functional Modules &amp; Implementation</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Module Name</th>
+        <th>Key Technologies</th>
+        <th>Functional Responsibility</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. Ingestion Engine</strong></td>
+        <td>TypeScript, Fetch API</td>
+        <td>Communicates with YouTube Data API v3; parses ISO-8601 durations; sanitizes null statistics.</td>
+      </tr>
+      <tr>
+        <td><strong>2. Collector Endpoint</strong></td>
+        <td>Next.js Route Handlers</td>
+        <td><code>POST /api/collect</code> protected by <code>COLLECT_SECRET</code> bearer token; handles batch database transactions.</td>
+      </tr>
+      <tr>
+        <td><strong>3. Analytical Query Core</strong></td>
+        <td>node-postgres (pg), SQL CTEs</td>
+        <td>Executes multi-stage CTEs with <code>PERCENT_RANK()</code>, <code>DISTINCT ON</code>, and <code>LAG()</code> window aggregations.</td>
+      </tr>
+      <tr>
+        <td><strong>4. Analytics UI Dashboard</strong></td>
+        <td>React Server Components, Tailwind CSS</td>
+        <td>Glassmorphic dark UI; dynamic KPI metric cards; live sync heartbeat; auto-refresh countdown indicator.</td>
+      </tr>
+      <tr>
+        <td><strong>5. Visualization Engine</strong></td>
+        <td>Recharts, SVG Gradients</td>
+        <td>Renders cumulative timeline area charts, velocity bar charts with threshold reference lines, and category compositions.</td>
+      </tr>
+      <tr>
+        <td><strong>6. Video Intelligence Dossier</strong></td>
+        <td>Next.js Client Components</td>
+        <td>Embedded YouTube player preview, 4-bar Trend Score percentile inspector, and snapshot audit history with CSV download.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>8. Hardware and Software Specifications</h2>
+  <div class="meta-grid">
+    <div class="meta-item">
+      <strong>Software Requirements:</strong>
+      <ul>
+        <li>Operating System: Windows 10/11, macOS, or Linux</li>
+        <li>Runtime Environment: Node.js (v18.x or v20.x+)</li>
+        <li>Framework: Next.js 14 (App Router)</li>
+        <li>Language: TypeScript 5.5</li>
+        <li>Database: PostgreSQL 18.x</li>
+        <li>Styling: Tailwind CSS 3.4</li>
+        <li>Charts: Recharts 2.12</li>
+      </ul>
+    </div>
+    <div class="meta-item">
+      <strong>Hardware Requirements:</strong>
+      <ul>
+        <li>Processor: Dual-Core Intel/AMD Core i3 or higher</li>
+        <li>Memory (RAM): Minimum 4 GB (8 GB recommended)</li>
+        <li>Storage: 500 MB free disk space for runtime and DB</li>
+        <li>Network: Active broadband connection for YouTube API polling</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>9. Verification &amp; Testing Outcomes</h2>
+  <p>
+    The platform underwent comprehensive verification across automated test scripts, integration checks, and UI browser tests:
+  </p>
+  <ul>
+    <li><strong>API Authentication &amp; Connectivity:</strong> Verified against YouTube Data API v3; fetched 50 trending videos per country and 31 regional categories at only 2 quota units per region.</li>
+    <li><strong>Database &amp; Transaction Guard:</strong> PostgreSQL local connection verified at <code>127.0.0.1:5432</code>; duplicate snapshot guard validated via <code>ON CONFLICT (video_id, region, captured_at) DO NOTHING</code>.</li>
+    <li><strong>REST API Endpoints:</strong> Verified HTTP 200 responses across <code>/api/trending</code>, <code>/api/rising</code>, <code>/api/analytics</code>, and <code>/api/video/[id]</code>.</li>
+    <li><strong>Build Integrity:</strong> Production compilation (<code>npm run build</code>) validated with all 13 routes successfully pre-rendered. ESLint analysis passed with zero errors or warnings.</li>
+    <li><strong>Interactive UI Validation:</strong> Visual rendering of dark-mode glassmorphic theme, country selection pills, search filters, Recharts tooltips, and embedded playback confirmed via automated browser subagents.</li>
+  </ul>
+
+  <h2>10. Conclusion</h2>
+  <p>
+    The <strong>YouTube Trend Intelligence Platform</strong> successfully solves the problem of temporal opacity in video viewership. By establishing an append-only snapshot architecture paired with PostgreSQL window functions, the system derives accurate view velocity and transparent trend rankings while preserving free-tier quota limits. The application represents a complete, professional, full-stack software engineering project meeting all academic and industry standards for an MCA final-year capstone.
+  </p>
+
+</body>
+</html>

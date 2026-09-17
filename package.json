@@ -1,0 +1,41 @@
+{
+  "name": "youtube-trend-intelligence",
+  "version": "1.0.0",
+  "description": "Full-stack near-real-time YouTube trending intelligence and analytics platform with immutable snapshots and mathematical percentile scoring.",
+  "author": "Dhanush S (https://github.com/Dhanush-734)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dhanush-734/youtube-trend-intelligence.git"
+  },
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:setup": "psql \"$DATABASE_URL\" -f db/schema.sql",
+    "collect": "curl -s -X POST -H \"Authorization: Bearer $COLLECT_SECRET\" http://localhost:3000/api/collect"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.47.0",
+    "next": "14.2.15",
+    "pg": "^8.12.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.12.7",
+    "tailwind-merge": "^3.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/pg": "^8.11.6",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.15",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.6",
+    "typescript": "^5.5.3"
+  }
+}
