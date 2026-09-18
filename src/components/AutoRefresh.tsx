@@ -36,13 +36,13 @@ export function AutoRefresh({ intervalSeconds = 60 }: { intervalSeconds?: number
     <button
       type="button"
       onClick={handleManualRefresh}
-      className="inline-flex items-center gap-1.5 rounded-md border border-edge bg-panel px-2.5 py-1 text-xs text-muted hover:border-cool/40 hover:bg-raised hover:text-text transition-all"
+      className="inline-flex items-center gap-1.5 rounded-xl border border-yt-border bg-yt-elevated px-3 py-1.5 text-xs text-yt-secondary hover:border-yt-secondary/40 hover:text-white transition-all"
       title="Auto-refreshing near-real-time view. Click to reload now."
     >
       <RefreshCw
-        className={`h-3 w-3 text-cool ${isRefreshing ? "animate-spin" : ""}`}
+        className={`h-3 w-3 text-yt-red ${isRefreshing ? "animate-spin" : ""}`}
       />
-      <span className="tnum">Syncs in {secondsLeft}s</span>
+      <span className="tnum font-medium">Syncs in {secondsLeft}s</span>
     </button>
   );
 }

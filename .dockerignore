@@ -1,0 +1,13 @@
+node_modules
+.next
+.git
+.gitignore
+.env*.local
+*.log
+*.pdf
+.github
+.agents
+scripts/verify.mjs
+scripts/test-*.mjs
+README.md
+synopsis.html

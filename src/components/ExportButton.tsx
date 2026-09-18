@@ -47,11 +47,11 @@ export function ExportButton({
     <button
       type="button"
       onClick={handleExport}
-      className="inline-flex items-center gap-1.5 rounded-md border border-edge bg-panel px-3 py-1.5 text-xs font-medium text-muted transition-all hover:border-cool/50 hover:bg-raised hover:text-text"
+      className="inline-flex items-center gap-1.5 rounded-xl border border-yt-border bg-yt-elevated px-3 py-1.5 text-xs font-semibold text-white transition-all hover:border-yt-secondary/50 hover:bg-yt-card"
       title="Download snapshot dataset as CSV"
     >
-      <Download className="h-3.5 w-3.5 text-cool" />
-      {label}
+      <Download className="h-3.5 w-3.5 text-yt-red" />
+      <span>{label}</span>
     </button>
   );
 }

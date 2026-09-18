@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Grid, ArrowRight } from "lucide-react";
+import { Music2, ArrowRight, Layers, Flame, TrendingUp } from "lucide-react";
 import { getCategoryStats } from "@/lib/queries";
 import { REGIONS, isRegion } from "@/lib/youtube";
 import { compact } from "@/lib/format";
@@ -32,16 +32,18 @@ export default async function CategoriesPage({
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-edge/60 pb-5">
+      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-yt-border pb-5">
         <div>
-          <div className="flex items-center gap-2">
-            <Grid className="h-6 w-6 text-cool" />
-            <h1 className="font-display text-2xl font-bold tracking-tight text-text sm:text-3xl">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-yt-red/15 text-yt-red border border-yt-red/30 shadow-[0_0_15px_rgba(255,0,0,0.2)]">
+              <Music2 className="h-5 w-5" />
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
               Category Intelligence — {regionName}
             </h1>
           </div>
-          <p className="mt-1 text-xs text-muted max-w-xl">
-            Breakdown of trending categories, their market share, aggregate reach, and audience interaction rates.
+          <p className="mt-2 text-xs sm:text-sm text-yt-secondary max-w-xl leading-relaxed">
+            Genre breakdown of trending videos in {regionName}, including market share, aggregate reach, and audience interaction rates.
           </p>
         </div>
         <RegionPicker current={region} />
@@ -54,16 +56,18 @@ export default async function CategoriesPage({
         />
       ) : (
         <div className="space-y-6">
+          {/* Top Category Distribution Chart */}
           <Panel
-            title="Category Composition Distribution"
+            title="📊 Category Composition Distribution"
             note="Number of trending videos per genre on the current chart"
           >
             <CategoryChart data={categories} />
           </Panel>
 
-          <div className="space-y-3">
+          {/* Detailed Categories Breakdown */}
+          <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-muted font-medium">
+              <span className="text-xs font-semibold text-yt-secondary">
                 Detailed category breakdown ({categories.length} categories)
               </span>
               <ExportButton
@@ -73,70 +77,118 @@ export default async function CategoriesPage({
               />
             </div>
 
-            <div className="overflow-hidden rounded-xl border border-edge bg-panel shadow-sm">
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[560px] text-xs">
-                  <thead>
-                    <tr className="border-b border-edge bg-raised/50 text-left text-muted font-medium">
-                      <th className="px-4 py-3.5 font-semibold text-text">Category</th>
-                      <th className="px-4 py-3.5 text-right font-semibold">Videos</th>
-                      <th className="px-4 py-3.5 text-right font-semibold">Chart Share</th>
-                      <th className="px-4 py-3.5 text-right font-semibold">Combined Views</th>
-                      <th className="px-4 py-3.5 text-right font-semibold">Avg Engagement</th>
-                      <th className="px-4 py-3.5 text-right font-semibold">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-edge/60">
-                    {categories.map((c) => (
-                      <tr
-                        key={c.category_id}
-                        className="group transition-colors hover:bg-raised/60"
-                      >
-                        <td className="px-4 py-3 font-semibold text-text group-hover:text-cool transition-colors">
-                          {c.category_name}
-                        </td>
-                        <td className="tnum px-4 py-3 text-right font-bold text-text">
-                          {c.video_count}
-                        </td>
-                        <td className="px-4 py-3 text-right">
-                          <div className="flex items-center justify-end gap-2">
-                            <span className="tnum text-muted font-medium">
-                              {c.share_pct}%
-                            </span>
-                            <div className="h-1.5 w-16 overflow-hidden rounded-full bg-raised">
-                              <div
-                                className="h-full rounded-full bg-cool"
-                                style={{ width: `${Math.max(4, c.share_pct)}%` }}
-                              />
-                            </div>
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-hidden rounded-2xl border border-yt-border bg-yt-card shadow-sm">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="border-b border-yt-border bg-yt-elevated/60 text-left text-yt-secondary font-semibold">
+                    <th className="px-5 py-4 font-bold text-white">Category Name</th>
+                    <th className="px-5 py-4 text-right font-bold">Videos</th>
+                    <th className="px-5 py-4 text-right font-bold">Chart Share</th>
+                    <th className="px-5 py-4 text-right font-bold">Combined Views</th>
+                    <th className="px-5 py-4 text-right font-bold">Avg Engagement</th>
+                    <th className="px-5 py-4 text-right font-bold">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-yt-border/60">
+                  {categories.map((c) => (
+                    <tr
+                      key={c.category_id}
+                      className="group transition-colors hover:bg-yt-elevated/70"
+                    >
+                      <td className="px-5 py-3.5 font-bold text-white group-hover:text-yt-red transition-colors text-sm">
+                        {c.category_name}
+                      </td>
+                      <td className="tnum px-5 py-3.5 text-right font-bold text-white">
+                        {c.video_count}
+                      </td>
+                      <td className="px-5 py-3.5 text-right">
+                        <div className="flex items-center justify-end gap-2.5">
+                          <span className="tnum text-yt-secondary font-semibold">
+                            {c.share_pct}%
+                          </span>
+                          <div className="h-2 w-20 overflow-hidden rounded-full bg-yt-bg border border-yt-border/40">
+                            <div
+                              className="h-full rounded-full bg-yt-red"
+                              style={{ width: `${Math.max(4, c.share_pct)}%` }}
+                            />
                           </div>
-                        </td>
-                        <td className="tnum px-4 py-3 text-right font-medium text-text">
-                          {compact(c.total_views)}
-                        </td>
-                        <td className="tnum px-4 py-3 text-right">
-                          {c.avg_engagement !== null ? (
-                            <span className="font-semibold text-good">
-                              {c.avg_engagement}%
-                            </span>
-                          ) : (
-                            <span className="text-muted">—</span>
-                          )}
-                        </td>
-                        <td className="px-4 py-3 text-right">
-                          <Link
-                            href={`/trending?region=${region}&category=${c.category_id}`}
-                            className="inline-flex items-center gap-1 text-[11px] font-semibold text-cool hover:underline"
-                          >
-                            <span>Filter</span>
-                            <ArrowRight className="h-3 w-3" />
-                          </Link>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                        </div>
+                      </td>
+                      <td className="tnum px-5 py-3.5 text-right font-bold text-white">
+                        {compact(c.total_views)}
+                      </td>
+                      <td className="tnum px-5 py-3.5 text-right">
+                        {c.avg_engagement !== null ? (
+                          <span className="font-bold text-green-400">
+                            {c.avg_engagement}%
+                          </span>
+                        ) : (
+                          <span className="text-yt-muted">—</span>
+                        )}
+                      </td>
+                      <td className="px-5 py-3.5 text-right">
+                        <Link
+                          href={`/trending?region=${region}&category=${c.category_id}`}
+                          className="inline-flex items-center gap-1 text-xs font-bold text-yt-red hover:underline"
+                        >
+                          <span>Filter Chart</span>
+                          <ArrowRight className="h-3 w-3" />
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Card View (Zero horizontal overflow on mobile!) */}
+            <div className="grid grid-cols-1 gap-3.5 md:hidden">
+              {categories.map((c) => (
+                <div
+                  key={c.category_id}
+                  className="rounded-2xl border border-yt-border bg-yt-card p-4 space-y-3 shadow-sm"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-sm text-white">
+                      {c.category_name}
+                    </span>
+                    <span className="tnum rounded-lg bg-yt-red/15 px-2 py-0.5 text-xs font-bold text-yt-red">
+                      {c.video_count} videos ({c.share_pct}%)
+                    </span>
+                  </div>
+
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-yt-bg border border-yt-border/40">
+                    <div
+                      className="h-full rounded-full bg-yt-red"
+                      style={{ width: `${Math.max(4, c.share_pct)}%` }}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-yt-border text-center text-xs">
+                    <div className="rounded-xl bg-yt-elevated/50 p-2">
+                      <div className="text-[10px] text-yt-muted">Total Views</div>
+                      <div className="tnum font-bold text-white mt-0.5">{compact(c.total_views)}</div>
+                    </div>
+                    <div className="rounded-xl bg-yt-elevated/50 p-2">
+                      <div className="text-[10px] text-yt-muted">Avg Engagement</div>
+                      <div className="tnum font-bold text-green-400 mt-0.5">
+                        {c.avg_engagement !== null ? `${c.avg_engagement}%` : "—"}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-1 text-right">
+                    <Link
+                      href={`/trending?region=${region}&category=${c.category_id}`}
+                      className="inline-flex items-center gap-1 text-xs font-bold text-yt-red hover:underline"
+                    >
+                      <span>Filter Trending Videos</span>
+                      <ArrowRight className="h-3 w-3" />
+                    </Link>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

@@ -12,7 +12,7 @@ interface SearchBarProps {
 }
 
 export function SearchBar({
-  placeholder = "Search videos or channels...",
+  placeholder = "Search videos or creators...",
   initialQuery = "",
   initialSort = "score",
   showSort = true,
@@ -59,9 +59,13 @@ export function SearchBar({
   }
 
   return (
-    <div className={`flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between ${pending ? "opacity-75" : ""}`}>
+    <div
+      className={`flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between ${
+        pending ? "opacity-75" : ""
+      }`}
+    >
       <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-md">
-        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-muted">
+        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-yt-secondary">
           <Search className="h-4 w-4" />
         </div>
         <input
@@ -69,13 +73,14 @@ export function SearchBar({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
-          className="w-full rounded-lg border border-edge bg-panel py-2 pl-9 pr-8 text-xs text-text placeholder:text-muted focus:border-cool focus:bg-raised focus:outline-none focus:ring-1 focus:ring-cool transition-all"
+          className="w-full rounded-xl border border-yt-border bg-yt-bg py-2.5 pl-10 pr-9 text-xs text-white placeholder:text-yt-muted focus:border-yt-red focus:bg-yt-elevated/40 focus:outline-none focus:ring-1 focus:ring-yt-red transition-all"
         />
         {query && (
           <button
             type="button"
             onClick={handleClear}
-            className="absolute inset-y-0 right-0 flex items-center pr-2.5 text-muted hover:text-text"
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-yt-secondary hover:text-white"
+            aria-label="Clear search query"
           >
             <X className="h-3.5 w-3.5" />
           </button>
@@ -84,15 +89,15 @@ export function SearchBar({
 
       {showSort && (
         <div className="flex items-center gap-2 text-xs">
-          <label htmlFor="sort-select" className="flex items-center gap-1.5 text-muted font-medium">
-            <SlidersHorizontal className="h-3.5 w-3.5 text-cool" />
-            Sort by:
+          <label htmlFor="sort-select" className="flex items-center gap-1.5 text-yt-secondary font-semibold">
+            <SlidersHorizontal className="h-3.5 w-3.5 text-yt-red" />
+            Sort:
           </label>
           <select
             id="sort-select"
             value={searchParams.get("sort") ?? initialSort}
             onChange={handleSortChange}
-            className="rounded-md border border-edge bg-panel px-2.5 py-1.5 text-xs text-text focus:border-cool focus:outline-none transition-colors"
+            className="rounded-xl border border-yt-border bg-yt-elevated px-3 py-2 text-xs font-semibold text-white focus:border-yt-red focus:outline-none transition-colors cursor-pointer"
           >
             <option value="score">Custom Trend Score</option>
             <option value="views">Total Views</option>

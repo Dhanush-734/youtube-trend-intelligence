@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TrendingUp, Flame, Info, Eye, Zap, Layers } from "lucide-react";
+import { TrendingUp, Flame, Info, Eye, Zap, Layers, Rocket, ArrowUpRight } from "lucide-react";
 import {
   getRising,
   RISING_MIN_VELOCITY,
@@ -41,64 +41,81 @@ export default async function RisingPage({
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-edge/60 pb-5">
+      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-yt-border pb-5">
         <div>
-          <div className="flex items-center gap-2">
-            <TrendingUp className="h-6 w-6 text-heat" />
-            <h1 className="font-display text-2xl font-bold tracking-tight text-text sm:text-3xl">
-              Rising Breakouts in {regionName}
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-yt-red/15 text-yt-red border border-yt-red/30 shadow-[0_0_15px_rgba(255,0,0,0.2)]">
+              <Rocket className="h-5 w-5" />
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+              🚀 Rising Fast in {regionName}
             </h1>
           </div>
-          <p className="mt-1 text-xs text-muted max-w-2xl leading-relaxed">
-            Rule-based detection measuring observed growth between consecutive snapshots.
-            A video qualifies once it clears the <strong className="text-text">{compact(RISING_MIN_VIEWS)} view floor</strong> and is climbing at <strong className="text-text">&gt;{compact(RISING_MIN_VELOCITY)} views/hr</strong>.
+          <p className="mt-2 text-xs sm:text-sm text-yt-secondary max-w-2xl leading-relaxed">
+            Rule-based breakout detection measuring observed growth between consecutive snapshots.
+            A video qualifies once it clears the <strong className="text-white">{compact(RISING_MIN_VIEWS)} view floor</strong> and is climbing at <strong className="text-yt-red">&gt;{compact(RISING_MIN_VELOCITY)} views/hr</strong>.
           </p>
         </div>
         <RegionPicker current={region} />
       </div>
 
+      {/* Explicit Methodology Disclaimer Card */}
+      <div className="rounded-2xl border border-yt-red/30 bg-gradient-to-r from-yt-red/10 via-yt-card to-yt-card p-4 sm:p-5">
+        <div className="flex items-start gap-3">
+          <Info className="h-5 w-5 text-yt-red shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <h3 className="text-xs sm:text-sm font-bold text-white">
+              Empirical Snapshot Methodology Note
+            </h3>
+            <p className="text-xs text-yt-secondary leading-relaxed">
+              <strong className="text-white">Rising detection is based on observed historical growth and is NOT future prediction.</strong> Rapid observed growth is calculated directly from consecutive snapshot timestamps stored in PostgreSQL.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Threshold Explanation Banner */}
-      <div className="grid gap-3 sm:grid-cols-3">
-        <div className="rounded-xl border border-edge bg-panel p-4 flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-cool/10 text-cool border border-cool/20">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="rounded-2xl border border-yt-border bg-yt-card p-4 sm:p-5 flex items-center gap-3.5 shadow-sm">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-yt-elevated text-yt-secondary border border-yt-border">
             <Eye className="h-5 w-5" />
           </div>
           <div>
-            <div className="text-[11px] font-medium text-muted">View Count Floor</div>
-            <div className="tnum font-display text-lg font-bold text-text">
+            <div className="text-xs font-semibold text-yt-secondary uppercase tracking-wider">View Count Floor</div>
+            <div className="tnum text-xl font-bold text-white mt-0.5">
               &ge; {compact(RISING_MIN_VIEWS)}
             </div>
-            <div className="text-[10px] text-muted">Excludes small base percentage spikes</div>
+            <div className="text-[11px] text-yt-muted">Excludes small base percentage spikes</div>
           </div>
         </div>
 
-        <div className="rounded-xl border border-edge bg-panel p-4 flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-heat/10 text-heat border border-heat/20">
+        <div className="rounded-2xl border border-yt-border bg-yt-card p-4 sm:p-5 flex items-center gap-3.5 shadow-sm">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-yt-red/15 text-yt-red border border-yt-red/30">
             <Zap className="h-5 w-5" />
           </div>
           <div>
-            <div className="text-[11px] font-medium text-muted">Velocity Threshold</div>
-            <div className="tnum font-display text-lg font-bold text-heat">
+            <div className="text-xs font-semibold text-yt-secondary uppercase tracking-wider">Velocity Floor</div>
+            <div className="tnum text-xl font-bold text-yt-red mt-0.5">
               &ge; +{compact(RISING_MIN_VELOCITY)}/hr
             </div>
-            <div className="text-[10px] text-muted">Computed from actual window time</div>
+            <div className="text-[11px] text-yt-muted">Derived from actual elapsed window</div>
           </div>
         </div>
 
-        <div className="rounded-xl border border-edge bg-panel p-4 flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-good/10 text-good border border-good/20">
+        <div className="rounded-2xl border border-yt-border bg-yt-card p-4 sm:p-5 flex items-center gap-3.5 shadow-sm">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-green-500/15 text-green-400 border border-green-500/30">
             <Info className="h-5 w-5" />
           </div>
           <div>
-            <div className="text-[11px] font-medium text-muted">Algorithm Methodology</div>
-            <div className="text-xs font-bold text-text">Deterministic &amp; Rule-Based</div>
-            <div className="text-[10px] text-muted">Observed growth, zero ML speculation</div>
+            <div className="text-xs font-semibold text-yt-secondary uppercase tracking-wider">Algorithm</div>
+            <div className="text-sm font-bold text-white mt-0.5">Deterministic &amp; Rule-Based</div>
+            <div className="text-[11px] text-yt-muted">Zero artificial speculation</div>
           </div>
         </div>
       </div>
 
       {/* Search and Export Toolbar */}
-      <div className="flex flex-col gap-3 rounded-xl border border-edge bg-panel/60 p-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 rounded-2xl border border-yt-border bg-yt-card p-4 sm:p-5 sm:flex-row sm:items-center sm:justify-between shadow-sm">
         <div className="flex-1">
           <SearchBar
             placeholder="Filter rising videos..."
@@ -124,22 +141,23 @@ export default async function RisingPage({
           body="Either the collector has only run once, or no tracked video is currently gaining faster than 5,000 views/hr. Growth requires two snapshots to compare."
         />
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-3.5">
           {videos.map((v, i) => (
             <Link
               key={v.video_id}
               href={`/video/${v.video_id}?region=${region}`}
-              className="group relative flex flex-col sm:flex-row sm:items-center gap-4 rounded-xl border border-heat/30 bg-panel p-4 transition-all duration-300 hover:border-heat/70 hover:bg-raised hover:shadow-[0_0_15px_rgba(255,122,69,0.12)]"
+              className="group relative flex flex-col sm:flex-row sm:items-center gap-4 rounded-2xl border border-yt-red/30 bg-yt-card p-4 transition-all duration-300 hover:border-yt-red hover:bg-yt-elevated hover:shadow-[0_8px_24px_rgba(255,0,0,0.12)]"
             >
+              {/* Rank */}
               <div className="flex sm:flex-col items-center justify-between sm:justify-center w-8 shrink-0 text-center">
-                <span className="tnum font-display text-base font-bold text-heat">
+                <span className="tnum text-lg font-black text-yt-red">
                   #{i + 1}
                 </span>
-                <Flame className="h-3.5 w-3.5 text-heat mt-0.5" />
+                <Flame className="h-4 w-4 text-yt-red fill-yt-red mt-0.5" />
               </div>
 
-              {/* Thumbnail */}
-              <div className="relative shrink-0 overflow-hidden rounded-lg border border-edge sm:w-36 aspect-video bg-raised">
+              {/* 16:9 Thumbnail */}
+              <div className="relative shrink-0 overflow-hidden rounded-xl border border-yt-border w-full sm:w-40 aspect-video bg-yt-elevated">
                 {v.thumbnail_url ? (
                   /* eslint-disable-next-line @next/next/no-img-element */
                   <img
@@ -149,49 +167,51 @@ export default async function RisingPage({
                     className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center text-muted">
-                    <Layers className="h-5 w-5" />
+                  <div className="flex h-full w-full items-center justify-center text-yt-muted">
+                    <Layers className="h-6 w-6" />
                   </div>
                 )}
               </div>
 
               {/* Information */}
               <div className="min-w-0 flex-1">
-                <h2 className="line-clamp-2 text-sm font-semibold leading-snug text-text group-hover:text-heat transition-colors">
+                <h2 className="line-clamp-2 text-sm sm:text-base font-bold leading-snug text-white group-hover:text-yt-red transition-colors">
                   {v.title}
                 </h2>
-                <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted">
-                  <span className="font-medium text-text/80">{v.channel_name}</span>
-                  <span>•</span>
+                <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-yt-secondary">
+                  <span className="font-semibold text-white/90">{v.channel_name}</span>
+                  <span className="text-yt-muted">•</span>
                   <span>Published {timeAgo(v.published_at)}</span>
-                  <span>•</span>
+                  <span className="text-yt-muted">•</span>
                   <span>Window: {v.window_hours.toFixed(2)}h</span>
                 </div>
 
-                <div className="tnum mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted">
-                  <span>{compact(v.view_count)} views now</span>
+                <div className="tnum mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-yt-secondary">
+                  <span className="font-semibold text-white">{compact(v.view_count)} views now</span>
                   {v.growth_pct !== null && (
-                    <span className="rounded bg-heat/15 px-1.5 py-0.5 text-heat font-semibold">
+                    <span className="inline-flex items-center gap-0.5 rounded-md bg-yt-red/15 px-2 py-0.5 text-yt-red font-bold border border-yt-red/30">
+                      <ArrowUpRight className="h-3 w-3" />
                       +{v.growth_pct}%
                     </span>
                   )}
                   {v.engagement_rate !== null && (
-                    <span className="text-good font-medium">
+                    <span className="text-green-400 font-semibold">
                       {v.engagement_rate}% engagement
                     </span>
                   )}
                 </div>
               </div>
 
-              {/* Velocity Highlight */}
-              <div className="flex sm:flex-col items-center justify-between sm:justify-center sm:items-end shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-edge/60">
-                <div className="tnum font-display text-lg font-bold text-heat sm:text-xl">
+              {/* Velocity Highlight Badge */}
+              <div className="flex sm:flex-col items-center justify-between sm:justify-center sm:items-end shrink-0 pt-3 sm:pt-0 border-t sm:border-t-0 border-yt-border">
+                <div className="tnum text-xl sm:text-2xl font-black text-yt-red flex items-center gap-1">
+                  <Rocket className="h-4 w-4" />
                   +{compact(v.view_delta)}
                 </div>
-                <div className="tnum text-xs font-semibold text-heat/90">
+                <div className="tnum text-xs font-bold text-yt-secondary">
                   +{compact(Math.round(v.views_per_hour))}/hr
                 </div>
-                <div className="mt-1.5 flex sm:justify-end">
+                <div className="mt-2 flex sm:justify-end">
                   <ScoreBadge score={v.trend_score} size="sm" />
                 </div>
               </div>

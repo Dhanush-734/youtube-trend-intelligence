@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: youtube-trend-intelligence
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: YOUTUBE_API_KEY
+        sync: false
+      - key: COLLECT_SECRET
+        sync: false
+      - key: APP_URL
+        sync: false

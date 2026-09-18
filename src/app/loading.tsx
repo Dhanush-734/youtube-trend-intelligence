@@ -2,45 +2,38 @@ export default function Loading() {
   return (
     <div className="space-y-6 animate-pulse">
       {/* Header skeleton */}
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div className="space-y-2">
-          <div className="h-7 w-64 rounded-lg bg-raised" />
-          <div className="h-4 w-40 rounded bg-raised/60" />
-        </div>
-        <div className="flex gap-1.5">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="h-8 w-14 rounded-lg bg-raised" />
+      <div className="rounded-3xl border border-yt-border bg-yt-card p-6 sm:p-8 space-y-4">
+        <div className="h-4 w-48 rounded-full bg-yt-elevated" />
+        <div className="h-8 w-72 sm:w-96 rounded-xl bg-yt-elevated" />
+        <div className="h-4 w-60 rounded-lg bg-yt-elevated/70" />
+      </div>
+
+      {/* KPI stats skeleton: 1 col on mobile, 2 on tablet, 4 on desktop */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="h-28 rounded-2xl border border-yt-border bg-yt-card p-5 space-y-3">
+            <div className="h-3 w-20 rounded bg-yt-elevated" />
+            <div className="h-8 w-32 rounded bg-yt-elevated" />
+          </div>
+        ))}
+      </div>
+
+      {/* Content cards skeleton */}
+      <div className="space-y-3 pt-2">
+        <div className="h-5 w-52 rounded-lg bg-yt-elevated" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+            <div
+              key={i}
+              className="flex flex-col overflow-hidden rounded-2xl border border-yt-border bg-yt-card p-4 space-y-3"
+            >
+              <div className="aspect-video w-full rounded-xl bg-yt-elevated" />
+              <div className="h-4 w-3/4 rounded bg-yt-elevated" />
+              <div className="h-3 w-1/2 rounded bg-yt-elevated/60" />
+              <div className="h-6 w-1/3 rounded-lg bg-yt-elevated/40 pt-2" />
+            </div>
           ))}
         </div>
-      </div>
-
-      {/* KPI stats skeleton */}
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-24 rounded-xl border border-edge bg-panel p-4 space-y-3">
-            <div className="h-3 w-20 rounded bg-raised" />
-            <div className="h-7 w-28 rounded bg-raised" />
-          </div>
-        ))}
-      </div>
-
-      {/* Content list skeleton */}
-      <div className="space-y-3 pt-4">
-        <div className="h-5 w-48 rounded bg-raised" />
-        {[1, 2, 3, 4, 5].map((i) => (
-          <div
-            key={i}
-            className="flex items-center gap-4 rounded-xl border border-edge bg-panel p-4"
-          >
-            <div className="h-5 w-6 rounded bg-raised" />
-            <div className="h-16 w-28 rounded-lg bg-raised shrink-0" />
-            <div className="flex-1 space-y-2">
-              <div className="h-4 w-3/4 rounded bg-raised" />
-              <div className="h-3 w-1/3 rounded bg-raised/60" />
-            </div>
-            <div className="h-8 w-12 rounded-lg bg-raised shrink-0" />
-          </div>
-        ))}
       </div>
     </div>
   );

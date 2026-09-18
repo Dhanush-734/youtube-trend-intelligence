@@ -13,6 +13,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "db:migrate": "node scripts/setup-db.mjs",
     "db:setup": "psql \"$DATABASE_URL\" -f db/schema.sql",
     "collect": "curl -s -X POST -H \"Authorization: Bearer $COLLECT_SECRET\" http://localhost:3000/api/collect"
   },

@@ -20,7 +20,7 @@ export function RegionPicker({ current }: { current: string }) {
     <div
       role="group"
       aria-label="Country Region Selector"
-      className={`flex flex-wrap items-center gap-1.5 ${pending ? "opacity-60" : ""}`}
+      className={`flex flex-wrap items-center gap-2 ${pending ? "opacity-60" : ""}`}
     >
       {REGIONS.map((r) => {
         const isSelected = r.code === current;
@@ -30,24 +30,24 @@ export function RegionPicker({ current }: { current: string }) {
             type="button"
             onClick={() => choose(r.code)}
             aria-pressed={isSelected}
-            title={`View trending videos for ${r.name}`}
-            className={`group relative flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-all ${
+            title={`View trending intelligence for ${r.name}`}
+            className={`group relative flex items-center gap-2 rounded-xl border px-3 py-1.5 text-xs font-semibold transition-all duration-200 ${
               isSelected
-                ? "border-cool bg-cool/15 text-text shadow-[0_0_12px_rgba(86,168,255,0.25)]"
-                : "border-edge bg-panel text-muted hover:border-edge/90 hover:bg-raised hover:text-text"
+                ? "border-yt-red bg-yt-red/15 text-white shadow-[0_0_14px_rgba(255,0,0,0.25)]"
+                : "border-yt-border bg-yt-card text-yt-secondary hover:border-yt-secondary/40 hover:bg-yt-elevated hover:text-white"
             }`}
           >
             <span aria-hidden className="text-sm">
               {r.flag}
             </span>
             <span>{r.code}</span>
-            <span className="hidden sm:inline text-[11px] font-normal opacity-70">
+            <span className="hidden sm:inline text-[11px] font-normal opacity-80">
               {r.name}
             </span>
             {isSelected && (
               <span className="absolute -top-1 -right-1 flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cool opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-cool" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yt-red opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-yt-red" />
               </span>
             )}
           </button>

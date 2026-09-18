@@ -5,19 +5,31 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink:    "#0F1420",  // page
-        panel:  "#161C2A",  // cards
-        raised: "#1D2537",  // hover / inputs
-        edge:   "#262F45",  // borders
-        text:   "#E8ECF5",
-        muted:  "#8892AA",
-        heat:   "#FF7A45",  // rising / growth
-        cool:   "#56A8FF",  // steady / baseline
-        good:   "#3DD68C",
+        // Core YouTube Design System
+        "yt-red": "#FF0000",
+        "yt-red-dark": "#CC0000",
+        "yt-bg": "#0F0F0F",
+        "yt-card": "#181818",
+        "yt-elevated": "#212121",
+        "yt-border": "#303030",
+        "yt-text": "#FFFFFF",
+        "yt-secondary": "#AAAAAA",
+        "yt-muted": "#717171",
+
+        // Semantic & backward-compatible tokens aligned to YouTube palette
+        ink: "#0F0F0F",
+        panel: "#181818",
+        raised: "#212121",
+        edge: "#303030",
+        text: "#FFFFFF",
+        muted: "#AAAAAA",
+        heat: "#FF0000",
+        cool: "#FF3333",
+        good: "#22C55E",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        display: ["var(--font-sora)", "system-ui", "sans-serif"],
+        sans: ["var(--font-inter)", "system-ui", "-apple-system", "sans-serif"],
+        display: ["var(--font-inter)", "system-ui", "-apple-system", "sans-serif"],
       },
     },
   },

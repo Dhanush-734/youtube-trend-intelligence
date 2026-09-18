@@ -8,31 +8,58 @@
 
 html,
 body {
-  background: #0f1420;
-  color: #e8ecf5;
+  background-color: #0f0f0f;
+  color: #ffffff;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 body {
-  /* A very faint vertical lift so the page doesn't read as flat black */
+  /* Subtle YouTube-inspired ambient glow */
   background-image: radial-gradient(
-    120% 60% at 50% 0%,
-    rgba(86, 168, 255, 0.07) 0%,
-    rgba(15, 20, 32, 0) 60%
+    100% 50% at 50% 0%,
+    rgba(255, 0, 0, 0.04) 0%,
+    rgba(15, 15, 15, 0) 50%
   );
   background-attachment: fixed;
 }
 
-/* Numbers in tables and stat cards must not jitter as they update. */
+/* Numbers in tables and stat cards must not jitter */
 .tnum {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
 }
 
-/* Keyboard focus stays visible everywhere. */
+/* Keyboard focus */
 :focus-visible {
-  outline: 2px solid #56a8ff;
+  outline: 2px solid #ff0000;
   outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Custom modern dark scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+::-webkit-scrollbar-thumb {
+  background: #303030;
   border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}
+
+/* Hide scrollbar for horizontal pill bars while allowing scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -42,19 +69,4 @@ body {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #0f1420;
-}
-::-webkit-scrollbar-thumb {
-  background: #262f45;
-  border-radius: 6px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #36415c;
 }

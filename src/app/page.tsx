@@ -2,13 +2,14 @@ import Link from "next/link";
 import {
   Eye,
   Heart,
+  MessageSquare,
   Layers,
-  Users,
   Flame,
   TrendingUp,
   ArrowRight,
   Clock,
   Sparkles,
+  Zap,
 } from "lucide-react";
 import {
   getCategoryStats,
@@ -24,6 +25,7 @@ import { compact, timeAgo } from "@/lib/format";
 import { EmptyState, RegionPicker, StatCard, VideoRow } from "@/components/ui";
 import { CategoryChart, ChannelChart, TimelineChart } from "@/components/charts";
 import { ManualSyncModal } from "@/components/ManualSyncModal";
+import { AutoRefresh } from "@/components/AutoRefresh";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 60;
@@ -39,16 +41,18 @@ export default async function DashboardPage({
 
   if (!(await hasData(region))) {
     return (
-      <>
-        <PageHeader region={region} regionName={regionName} lastRun={null} />
-        <div className="mt-8">
-          <EmptyState
-            title={`No snapshot data found for ${regionName}`}
-            body="Run the data collection pipeline to capture YouTube's trending chart, or click below to trigger a live snapshot."
-            action={<ManualSyncModal region={region} />}
-          />
-        </div>
-      </>
+      <div className="space-y-6">
+        <HeroHeader
+          region={region}
+          regionName={regionName}
+          lastRun={null}
+        />
+        <EmptyState
+          title={`No snapshot data found for ${regionName}`}
+          body="Run the data collection pipeline to capture YouTube's trending chart, or click below to trigger a live snapshot."
+          action={<ManualSyncModal region={region} />}
+        />
+      </div>
     );
   }
 
@@ -64,81 +68,85 @@ export default async function DashboardPage({
 
   return (
     <div className="space-y-8">
-      <PageHeader
+      {/* Hero Header */}
+      <HeroHeader
         region={region}
         regionName={regionName}
         lastRun={summary.last_captured_at}
       />
 
-      {/* KPI Overview Cards */}
-      <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4">
-        <StatCard
-          label="Videos Tracked"
-          value={String(summary.videos)}
-          sub="On current chart snapshot"
-          icon={Layers}
-          variant="cool"
-        />
-        <StatCard
-          label="Combined Views"
-          value={compact(summary.total_views)}
-          sub="Across all tracked videos"
-          icon={Eye}
-          variant="cool"
-        />
-        <StatCard
-          label="Observed Likes"
-          value={compact(summary.total_likes)}
-          sub="Total interaction count"
-          icon={Heart}
-          variant="heat"
-        />
-        <StatCard
-          label="Distinct Channels"
-          value={String(summary.channels)}
-          sub="Currently charted creators"
-          icon={Users}
-          variant="good"
-        />
-      </div>
+      {/* KPI Cards: 1 col on mobile, 2 cols on tablet, 4 cols on desktop */}
+      <section aria-label="Key Performance Indicators">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard
+            label="Total Videos"
+            value={String(summary.videos)}
+            sub="Active on trending chart"
+            iconName="layers"
+            variant="default"
+          />
+          <StatCard
+            label="Total Views"
+            value={compact(summary.total_views)}
+            sub="Aggregated audience reach"
+            iconName="eye"
+            variant="default"
+          />
+          <StatCard
+            label="Total Likes"
+            value={compact(summary.total_likes)}
+            sub="Audience approvals"
+            iconName="heart"
+            variant="red"
+          />
+          <StatCard
+            label="Total Comments"
+            value={compact(summary.total_comments)}
+            sub="Viewer conversations"
+            iconName="comments"
+            variant="default"
+          />
+        </div>
+      </section>
 
       {/* Gaining Fastest (Rising Breakouts) */}
       {rising.length > 0 && (
-        <section className="rounded-2xl border border-heat/20 bg-gradient-to-b from-heat/5 via-panel to-panel p-5">
+        <section className="rounded-3xl border border-yt-red/30 bg-gradient-to-b from-yt-red/10 via-yt-card to-yt-card p-5 sm:p-6 shadow-xl">
           <SectionHeading
-            title="Fastest Growing Right Now (Rising)"
+            title="🚀 Rising Fast"
             subtitle="Observed view velocity clearing the 5,000 views/hr floor"
             icon={Flame}
-            iconColor="text-heat"
+            iconColor="text-yt-red"
             href={`/rising?region=${region}`}
             linkLabel="View all rising videos"
           />
 
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {rising.map((v) => (
               <Link
                 key={v.video_id}
                 href={`/video/${v.video_id}?region=${region}`}
-                className="group relative overflow-hidden rounded-xl border border-heat/30 bg-panel/80 p-4 transition-all duration-300 hover:border-heat/70 hover:bg-raised hover:shadow-[0_0_15px_rgba(255,122,69,0.15)]"
+                className="group relative flex flex-col overflow-hidden rounded-2xl border border-yt-border bg-yt-card/90 p-4 transition-all duration-300 hover:border-yt-red/60 hover:bg-yt-elevated hover:shadow-[0_4px_20px_rgba(255,0,0,0.15)]"
               >
                 <div className="flex items-center justify-between">
-                  <span className="rounded-full bg-heat/15 px-2 py-0.5 text-[10px] font-bold text-heat">
+                  <span className="inline-flex items-center gap-1 rounded-lg bg-yt-red/15 px-2 py-0.5 text-xs font-bold text-yt-red border border-yt-red/20">
+                    <Flame className="h-3 w-3 fill-yt-red" />
                     +{compact(Math.round(v.views_per_hour))}/hr
                   </span>
-                  <span className="tnum font-display text-xs text-muted">
+                  <span className="tnum text-xs font-medium text-yt-secondary">
                     {compact(v.view_count)} views
                   </span>
                 </div>
 
-                <div className="mt-3 line-clamp-2 text-sm font-semibold leading-snug text-text group-hover:text-heat transition-colors">
+                <div className="mt-3 line-clamp-2 text-sm font-bold leading-snug text-white group-hover:text-yt-red transition-colors">
                   {v.title}
                 </div>
 
-                <div className="mt-2 flex items-center justify-between text-xs text-muted">
-                  <span className="truncate max-w-[140px] font-medium">
+                <div className="mt-auto pt-3 flex items-center justify-between text-xs text-yt-secondary border-t border-yt-border/50">
+                  <span className="truncate max-w-[130px] font-semibold text-white/90">
                     {v.channel_name}
                   </span>
-                  <span className="text-[11px]">{timeAgo(v.published_at)}</span>
+                  <span className="text-[11px] text-yt-muted">{timeAgo(v.published_at)}</span>
                 </div>
               </Link>
             ))}
@@ -152,12 +160,12 @@ export default async function DashboardPage({
           title="Top Trending Ranked by Custom Trend Score"
           subtitle="Multi-factor score derived from velocity (50%), engagement (20%), recency (15%), reach (15%)"
           icon={Sparkles}
-          iconColor="text-cool"
+          iconColor="text-yt-red"
           href={`/trending?region=${region}`}
           linkLabel="Explore full chart & filters"
         />
 
-        <div className="space-y-2.5">
+        <div className="space-y-3">
           {trending.map((v, i) => (
             <VideoRow key={v.video_id} video={v} rank={i + 1} region={region} />
           ))}
@@ -165,7 +173,7 @@ export default async function DashboardPage({
       </section>
 
       {/* Visual Analytics Panels */}
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-6 lg:grid-cols-2">
         <Panel
           title="Observed Total Views Timeline"
           note="Cumulative views measured across each 15-minute collection run"
@@ -196,7 +204,7 @@ export default async function DashboardPage({
   );
 }
 
-function PageHeader({
+function HeroHeader({
   region,
   regionName,
   lastRun,
@@ -206,28 +214,42 @@ function PageHeader({
   lastRun: string | null;
 }) {
   return (
-    <div className="flex flex-wrap items-end justify-between gap-4 border-b border-edge/60 pb-5">
-      <div>
-        <div className="flex items-center gap-2">
-          <h1 className="font-display text-2xl font-bold tracking-tight text-text sm:text-3xl">
-            {regionName} Video Intelligence
+    <div className="rounded-3xl border border-yt-border bg-gradient-to-br from-yt-card via-yt-card to-yt-elevated/50 p-6 sm:p-8 shadow-xl">
+      <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-2 rounded-full border border-yt-red/30 bg-yt-red/10 px-3 py-1 text-xs font-semibold text-yt-red">
+            <span className="h-2 w-2 rounded-full bg-yt-red animate-pulse" />
+            <span>Near-Real-Time YouTube Video Analytics</span>
+          </div>
+
+          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+            Understand What&apos;s Trending on YouTube
           </h1>
+
+          <p className="text-sm sm:text-base text-yt-secondary max-w-2xl leading-relaxed">
+            Near-real-time video intelligence powered by YouTube data.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-1 text-xs text-yt-secondary">
+            <span className="flex items-center gap-1.5 font-semibold text-white">
+              Active Region: <strong className="text-yt-red">{regionName} ({region})</strong>
+            </span>
+            <span className="text-yt-muted">•</span>
+            <span className="flex items-center gap-1">
+              <Clock className="h-3.5 w-3.5 text-yt-muted" />
+              {lastRun
+                ? `Last snapshot: ${timeAgo(lastRun)}`
+                : "Awaiting snapshot collection"}
+            </span>
+          </div>
         </div>
-        <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-muted">
-          <span className="flex items-center gap-1.5 font-medium text-text/80">
-            <span className="h-2 w-2 rounded-full bg-good animate-pulse" />
-            Active Region: <strong className="text-cool">{region}</strong>
-          </span>
-          <span>•</span>
-          <span className="flex items-center gap-1">
-            <Clock className="h-3 w-3 text-muted" />
-            {lastRun
-              ? `Last snapshot captured ${timeAgo(lastRun)}`
-              : "Awaiting snapshot collection"}
-          </span>
+
+        {/* Region Selector Pills */}
+        <div className="shrink-0 flex flex-col items-start lg:items-end gap-3">
+          <span className="text-xs font-semibold text-yt-secondary">Quick Region Select:</span>
+          <RegionPicker current={region} />
         </div>
       </div>
-      <RegionPicker current={region} />
     </div>
   );
 }
@@ -236,7 +258,7 @@ function SectionHeading({
   title,
   subtitle,
   icon: Icon,
-  iconColor = "text-cool",
+  iconColor = "text-yt-red",
   href,
   linkLabel,
 }: {
@@ -250,20 +272,20 @@ function SectionHeading({
   return (
     <div className="flex flex-wrap items-end justify-between gap-3">
       <div>
-        <div className="flex items-center gap-2">
-          {Icon && <Icon className={`h-4 w-4 ${iconColor}`} />}
-          <h2 className="font-display text-lg font-bold tracking-tight text-text">
+        <div className="flex items-center gap-2.5">
+          {Icon && <Icon className={`h-5 w-5 ${iconColor}`} />}
+          <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white">
             {title}
           </h2>
         </div>
-        {subtitle && <p className="mt-0.5 text-xs text-muted">{subtitle}</p>}
+        {subtitle && <p className="mt-1 text-xs text-yt-secondary">{subtitle}</p>}
       </div>
       <Link
         href={href}
-        className="group inline-flex items-center gap-1 text-xs font-semibold text-cool hover:underline"
+        className="group inline-flex items-center gap-1 text-xs font-bold text-yt-red hover:text-yt-red-dark transition-colors"
       >
         <span>{linkLabel}</span>
-        <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
       </Link>
     </div>
   );
@@ -279,10 +301,10 @@ export function Panel({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border border-edge bg-panel p-5 shadow-sm">
+    <div className="rounded-2xl border border-yt-border bg-yt-card p-5 sm:p-6 shadow-sm">
       <div className="mb-4">
-        <h3 className="font-display text-sm font-bold text-text">{title}</h3>
-        {note ? <p className="mt-0.5 text-xs text-muted">{note}</p> : null}
+        <h3 className="text-sm font-bold text-white">{title}</h3>
+        {note ? <p className="mt-1 text-xs text-yt-secondary">{note}</p> : null}
       </div>
       {children}
     </div>
@@ -291,11 +313,11 @@ export function Panel({
 
 function NeedsMoreSnapshots() {
   return (
-    <div className="flex h-[260px] flex-col items-center justify-center rounded-xl border border-dashed border-edge/60 bg-raised/20 p-6 text-center text-xs text-muted">
-      <Clock className="h-6 w-6 text-cool mb-2" />
-      <span className="font-semibold text-text">One snapshot recorded so far</span>
+    <div className="flex h-[260px] flex-col items-center justify-center rounded-xl border border-dashed border-yt-border bg-yt-elevated/30 p-6 text-center text-xs text-yt-secondary">
+      <Clock className="h-6 w-6 text-yt-red mb-2" />
+      <span className="font-semibold text-white">One snapshot recorded so far</span>
       <span className="mt-1 max-w-xs">
-        The temporal view curve appears once consecutive 15-minute snapshots have accumulated.
+        The temporal view curve appears once consecutive snapshots have accumulated.
       </span>
     </div>
   );

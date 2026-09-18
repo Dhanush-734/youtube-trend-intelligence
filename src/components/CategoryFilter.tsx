@@ -28,14 +28,14 @@ export function CategoryFilter({
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-1.5">
+    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
       <Link
         href={buildUrl()}
         aria-current={!current ? "page" : undefined}
-        className={`rounded-lg border px-3 py-1 text-xs font-medium transition-all ${
+        className={`shrink-0 rounded-xl border px-3.5 py-1.5 text-xs font-semibold transition-all duration-200 ${
           !current
-            ? "border-cool bg-cool/15 text-cool shadow-[0_0_10px_rgba(86,168,255,0.2)]"
-            : "border-edge bg-panel text-muted hover:border-edge/90 hover:bg-raised hover:text-text"
+            ? "border-yt-red bg-yt-red/15 text-white shadow-[0_0_12px_rgba(255,0,0,0.25)]"
+            : "border-yt-border bg-yt-elevated text-yt-secondary hover:border-yt-secondary/40 hover:text-white"
         }`}
       >
         All Categories
@@ -47,10 +47,10 @@ export function CategoryFilter({
             key={c.category_id}
             href={buildUrl(c.category_id)}
             aria-current={isCurrent ? "page" : undefined}
-            className={`rounded-lg border px-3 py-1 text-xs font-medium transition-all ${
+            className={`shrink-0 rounded-xl border px-3.5 py-1.5 text-xs font-semibold transition-all duration-200 ${
               isCurrent
-                ? "border-cool bg-cool/15 text-cool shadow-[0_0_10px_rgba(86,168,255,0.2)]"
-                : "border-edge bg-panel text-muted hover:border-edge/90 hover:bg-raised hover:text-text"
+                ? "border-yt-red bg-yt-red/15 text-white shadow-[0_0_12px_rgba(255,0,0,0.25)]"
+                : "border-yt-border bg-yt-elevated text-yt-secondary hover:border-yt-secondary/40 hover:text-white"
             }`}
           >
             {c.category_name}

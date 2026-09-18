@@ -182,6 +182,7 @@ export interface Summary {
   channels: number;
   total_views: number;
   total_likes: number;
+  total_comments: number;
   last_captured_at: string | null;
 }
 
@@ -197,6 +198,7 @@ export async function getSummary(region: string): Promise<Summary> {
             COUNT(DISTINCT v.channel_id)::int     AS channels,
             COALESCE(SUM(l.view_count), 0)::bigint AS total_views,
             COALESCE(SUM(l.like_count), 0)::bigint AS total_likes,
+            COALESCE(SUM(l.comment_count), 0)::bigint AS total_comments,
             MAX(l.captured_at)                    AS last_captured_at
        FROM latest l JOIN videos v ON v.video_id = l.video_id`,
     [region],
@@ -207,6 +209,7 @@ export async function getSummary(region: string): Promise<Summary> {
       channels: 0,
       total_views: 0,
       total_likes: 0,
+      total_comments: 0,
       last_captured_at: null,
     }
   );
@@ -417,3 +420,77 @@ export async function hasData(region: string): Promise<boolean> {
   );
   return (rows[0]?.count ?? 0) > 0;
 }
+
+export interface CountryComparisonItem {
+  region: string;
+  video_count: number;
+  total_views: number;
+  total_likes: number;
+  avg_views: number;
+  last_captured_at: string | null;
+}
+
+/** Summarized comparisons across all 5 monitored regions for the Analytics suite */
+export async function getCountryComparison(): Promise<CountryComparisonItem[]> {
+  return query<CountryComparisonItem>(
+    `WITH latest AS (
+       SELECT DISTINCT ON (region, video_id) *
+         FROM video_snapshots
+        WHERE captured_at > now() - interval '48 hours'
+        ORDER BY region, video_id, captured_at DESC
+     )
+     SELECT region,
+            COUNT(*)::int AS video_count,
+            COALESCE(SUM(view_count), 0)::bigint AS total_views,
+            COALESCE(SUM(like_count), 0)::bigint AS total_likes,
+            COALESCE(ROUND(AVG(view_count)), 0)::bigint AS avg_views,
+            MAX(captured_at) AS last_captured_at
+       FROM latest
+      GROUP BY region
+      ORDER BY total_views DESC`,
+  );
+}
+
+export interface ScoreBucket {
+  range: string;
+  count: number;
+  fill?: string;
+}
+
+/** Distribution buckets of Custom Trend Scores (0-100) */
+export async function getScoreDistribution(region: string): Promise<ScoreBucket[]> {
+  const rows = await query<{ bucket: string; count: number }>(
+    `${SCORED_CTE}
+     , scored_with_val AS (
+       SELECT *, ${SCORE_EXPR} FROM scored
+     )
+     SELECT CASE 
+              WHEN trend_score >= 80 THEN '80-100 (Viral)'
+              WHEN trend_score >= 60 THEN '60-79 (High)'
+              WHEN trend_score >= 40 THEN '40-59 (Moderate)'
+              WHEN trend_score >= 20 THEN '20-39 (Low)'
+              ELSE '0-19 (Minimal)'
+            END AS bucket,
+            COUNT(*)::int AS count
+       FROM scored_with_val
+      WHERE ($3::int IS NULL OR 1=1)
+      GROUP BY bucket`,
+    [region, null, 100, "48"],
+  );
+
+  const desiredBuckets: ScoreBucket[] = [
+    { range: "80-100 (Viral)", count: 0, fill: "#FF0000" },
+    { range: "60-79 (High)", count: 0, fill: "#FF4D4D" },
+    { range: "40-59 (Moderate)", count: 0, fill: "#888888" },
+    { range: "20-39 (Low)", count: 0, fill: "#555555" },
+    { range: "0-19 (Minimal)", count: 0, fill: "#333333" },
+  ];
+
+  rows.forEach((r) => {
+    const found = desiredBuckets.find((b) => b.range.startsWith(r.bucket.slice(0, 5)));
+    if (found) found.count = r.count;
+  });
+
+  return desiredBuckets;
+}
+
